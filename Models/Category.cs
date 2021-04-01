@@ -7,13 +7,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskTrackerPrototype.Models
 {
+    [Table("Categories")]
     public class Category
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None), Key]        
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategoryID {get; set;}
         public int UserID { get; set; }
         public string CategoryName { get; set; }
         public string CategoryAbbreviation { get; set; }
-
+        public User User { get; }
     }
 }

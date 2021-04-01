@@ -14,7 +14,7 @@ namespace TaskTrackerPrototype.Models
         public int TaskId { get; set; }
         [Required, StringLength(10)]
         public string TaskName { get; set; }
-        [Required, StringLength(10)]
+        [Required, StringLength(20)]
 
         public string TaskDescription { get; set; }
         public int ObjectiveID { get; set; }
