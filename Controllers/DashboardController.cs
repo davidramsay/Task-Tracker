@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,7 +20,7 @@ namespace TaskTrackerPrototype.Controllers
         }
 
         // GET: Dashboard
-        public async Task<IActionResult> Index(int userID)
+        public async Task<IActionResult> Index()
         {
             IQueryable<string> tasksQuery = from t in _context.Task
                                             orderby t.TaskName
@@ -105,10 +102,10 @@ namespace TaskTrackerPrototype.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TaskID,TaskName,TaskDescription,TaskDueDate,ObjectiveID")] Tasker tasker)
         {
-            if (id != tasker.TaskId)
-            {
-                return NotFound();
-            }
+            //if (id != tasker.TaskId)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
@@ -132,11 +129,38 @@ namespace TaskTrackerPrototype.Controllers
             }
             return View(tasker);
         }
-        private bool TaskExists(int id)
+        
+        // GET: Categories/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            return _context.Task.Any(e => e.TaskId == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var tasker = await _context.Task
+                .FirstOrDefaultAsync(m => m.TaskId == id);
+            if (tasker == null)
+            {
+                return NotFound();
+            }
+
+            return View(tasker);
+        }
+        // POST: Dashboard/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int taskid)
+        {
+            var tasker = await _context.Task.FindAsync(taskid);
+            _context.Task.Remove(tasker);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
-      
+        private bool TaskExists(int taskid)
+        {
+            return _context.Task.Any(t => t.TaskId == taskid);
+        }
     }
 }

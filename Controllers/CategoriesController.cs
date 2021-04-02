@@ -20,9 +20,21 @@ namespace TaskTrackerPrototype.Views.Categories
         }
 
         // GET: Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int userID)
         {
-            return View(await _context.Category.ToListAsync());
+            IQueryable<string> categoriesQuery = from c in _context.Category
+                                            orderby c.CategoryName
+                                            select c.CategoryName;
+            var categories = from c in _context.Category
+                          select c;
+
+            var categoriesVM = new CategoriesViewModel
+            {
+                /*UserID = await tasksQuery.Distinct().ToListAsync(),*/
+                Categories = await categories.ToListAsync()
+            };
+
+            return View(categoriesVM);
         }
 
         // GET: Categories/Details/5

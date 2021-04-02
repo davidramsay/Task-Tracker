@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace TaskTrackerPrototype.Models
 {
-    public class TasksViewModel
+    public class CategoriesViewModel
     {
-        public List<Tasker> Tasks { get; set; }
+        public List<Category> Categories { get; set; }
     }
 }
